@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    move2kube.konveyor.io/service: api
+  name: api
+spec:
+  internalTrafficPolicy: Cluster
+  ports:
+    - name: port-1234
+      port: 1234
+      protocol: TCP
+      targetPort: 1234
+  selector:
+    move2kube.konveyor.io/service: api
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

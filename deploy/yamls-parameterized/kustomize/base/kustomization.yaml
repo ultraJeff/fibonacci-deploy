@@ -1,0 +1,10 @@
+resources:
+  - quay-io-imagepullsecret-secret.yaml
+  - web-deployment.yaml
+  - api-deployment.yaml
+  - fibonacci-api-latest-imagestream.yaml
+  - redis-deployment.yaml
+  - redis-service.yaml
+  - web-service.yaml
+  - api-service.yaml
+  - fibonacci-web-latest-imagestream.yaml

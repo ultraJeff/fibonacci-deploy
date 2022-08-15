@@ -1,0 +1,24 @@
+version: "3.5"
+services:
+  api:
+    container_name: api
+    environment:
+      REDIS_URL: redis://redis:6379
+    image: quay.io/jefrankl/fibonacci-api:latest
+    ports:
+      - target: 1234
+        published: 8080
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - target: 6379
+        published: 8082
+  web:
+    container_name: web
+    environment:
+      API_URL: http://api:1234/api
+    image: quay.io/jefrankl/fibonacci-web:latest
+    ports:
+      - target: 80
+        published: 8081

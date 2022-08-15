@@ -1,0 +1,4 @@
+resources:
+  - api-service.yaml
+  - redis-service.yaml
+  - web-service.yaml
