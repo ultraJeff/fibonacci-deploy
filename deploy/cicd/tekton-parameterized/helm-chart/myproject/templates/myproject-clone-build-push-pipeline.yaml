@@ -27,7 +27,7 @@ spec:
         - name: build-push-1
           params:
             - name: IMAGE
-              value: $(params.image-registry-url)/fibonacci-web:latest
+              value: $(params.image-registry-url)/fibonacci-api:latest
             - name: DOCKERFILE
               value: '<TODO: insert path to the Dockerfile>'
             - name: CONTEXT
@@ -57,7 +57,7 @@ spec:
         - name: build-push-2
           params:
             - name: IMAGE
-              value: $(params.image-registry-url)/fibonacci-api:latest
+              value: $(params.image-registry-url)/fibonacci-web:latest
             - name: DOCKERFILE
               value: '<TODO: insert path to the Dockerfile>'
             - name: CONTEXT

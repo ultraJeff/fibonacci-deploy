@@ -1,6 +1,6 @@
 resources:
+  - myproject-clone-build-push-fibonacci-api-latest-buildconfig.yaml
+  - myproject-clone-build-push-fibonacci-web-latest-buildconfig.yaml
   - myproject-git-repo-generic-secret.yaml
   - myproject-web-hook-fibonacci-api-latest-secret.yaml
   - myproject-web-hook-fibonacci-web-latest-secret.yaml
-  - myproject-clone-build-push-fibonacci-api-latest-buildconfig.yaml
-  - myproject-clone-build-push-fibonacci-web-latest-buildconfig.yaml

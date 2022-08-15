@@ -7,18 +7,18 @@ services:
     image: quay.io/jefrankl/fibonacci-api:latest
     ports:
       - target: 1234
-        published: 8080
+        published: 8082
   redis:
     container_name: redis
     image: redis
     ports:
       - target: 6379
-        published: 8082
+        published: 8081
   web:
     container_name: web
     environment:
       API_URL: http://api:1234/api
     image: quay.io/jefrankl/fibonacci-web:latest
     ports:
-      - target: 80
-        published: 8081
+      - target: 8080
+        published: 8080

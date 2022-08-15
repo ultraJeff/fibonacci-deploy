@@ -23,6 +23,34 @@ objects:
     metadata:
       creationTimestamp: null
       labels:
+        move2kube.konveyor.io/service: api
+      name: api
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+            - env:
+                - name: REDIS_URL
+                  value: redis://redis:6379
+              image: quay.io/jefrankl/fibonacci-api:latest
+              imagePullPolicy: Always
+              name: api
+              ports:
+                - containerPort: 1234
+                  protocol: TCP
+              resources: {}
+          imagePullSecrets:
+            - name: quay-io-imagepullsecret
+          restartPolicy: Always
+          securityContext: {}
+    status: {}
+  - apiVersion: serving.knative.dev/v1
+    kind: Service
+    metadata:
+      creationTimestamp: null
+      labels:
         move2kube.konveyor.io/service: redis
       name: redis
     spec:
@@ -61,35 +89,7 @@ objects:
               imagePullPolicy: Always
               name: web
               ports:
-                - containerPort: 80
-                  protocol: TCP
-              resources: {}
-          imagePullSecrets:
-            - name: quay-io-imagepullsecret
-          restartPolicy: Always
-          securityContext: {}
-    status: {}
-  - apiVersion: serving.knative.dev/v1
-    kind: Service
-    metadata:
-      creationTimestamp: null
-      labels:
-        move2kube.konveyor.io/service: api
-      name: api
-    spec:
-      template:
-        metadata:
-          creationTimestamp: null
-        spec:
-          containers:
-            - env:
-                - name: REDIS_URL
-                  value: redis://redis:6379
-              image: quay.io/jefrankl/fibonacci-api:latest
-              imagePullPolicy: Always
-              name: api
-              ports:
-                - containerPort: 1234
+                - containerPort: 8080
                   protocol: TCP
               resources: {}
           imagePullSecrets:

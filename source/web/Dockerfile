@@ -1,2 +1,2 @@
-FROM php:7-apache
+FROM ubi8/php-74
 COPY . /var/www/html/

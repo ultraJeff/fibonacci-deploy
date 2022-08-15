@@ -18,6 +18,14 @@ metadata:
   clustername: ""
   managedfields: []
 objects:
+  - apiVersion: v1
+    data:
+      WebHookSecretKey: MzZkZjhlYTlhN2I2ZmU5OA==
+    kind: Secret
+    metadata:
+      creationTimestamp: null
+      name: myproject-web-hook-fibonacci-web-latest
+    type: Opaque
   - apiVersion: build.openshift.io/v1
     kind: BuildConfig
     metadata:
@@ -90,18 +98,10 @@ objects:
     type: kubernetes.io/ssh-auth
   - apiVersion: v1
     data:
-      WebHookSecretKey: ZDY2ZDZkNmNiNmU5MzZhYQ==
+      WebHookSecretKey: MjFkMGVmOGM4NjIyOTczOQ==
     kind: Secret
     metadata:
       creationTimestamp: null
       name: myproject-web-hook-fibonacci-api-latest
-    type: Opaque
-  - apiVersion: v1
-    data:
-      WebHookSecretKey: NjM3MzMzOTk2NjU0ZjhkMg==
-    kind: Secret
-    metadata:
-      creationTimestamp: null
-      name: myproject-web-hook-fibonacci-web-latest
     type: Opaque
 parameters: []

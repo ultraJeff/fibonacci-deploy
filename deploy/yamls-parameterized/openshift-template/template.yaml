@@ -18,6 +18,14 @@ metadata:
   clustername: ""
   managedfields: []
 objects:
+  - apiVersion: v1
+    data:
+      .dockerconfigjson: ewoJImF1dGhzIjogewoJCSJxdWF5LmlvIjoge30KCX0KfQ==
+    kind: Secret
+    metadata:
+      creationTimestamp: null
+      name: quay-io-imagepullsecret
+    type: kubernetes.io/dockerconfigjson
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -65,26 +73,6 @@ objects:
     metadata:
       creationTimestamp: null
       labels:
-        move2kube.konveyor.io/service: redis
-      name: redis
-    spec:
-      internalTrafficPolicy: Cluster
-      ports:
-        - name: port-6379
-          port: 6379
-          protocol: TCP
-          targetPort: 6379
-      selector:
-        move2kube.konveyor.io/service: redis
-      sessionAffinity: None
-      type: ClusterIP
-    status:
-      loadBalancer: {}
-  - apiVersion: v1
-    kind: Service
-    metadata:
-      creationTimestamp: null
-      labels:
         move2kube.konveyor.io/service: web
       name: web
     spec:
@@ -93,110 +81,13 @@ objects:
         - name: port-8080
           port: 8080
           protocol: TCP
-          targetPort: 80
+          targetPort: 8080
       selector:
         move2kube.konveyor.io/service: web
       sessionAffinity: None
       type: ClusterIP
     status:
       loadBalancer: {}
-  - apiVersion: v1
-    kind: Service
-    metadata:
-      creationTimestamp: null
-      labels:
-        move2kube.konveyor.io/service: api
-      name: api
-    spec:
-      internalTrafficPolicy: Cluster
-      ports:
-        - name: port-1234
-          port: 1234
-          protocol: TCP
-          targetPort: 1234
-      selector:
-        move2kube.konveyor.io/service: api
-      sessionAffinity: None
-      type: ClusterIP
-    status:
-      loadBalancer: {}
-  - apiVersion: image.openshift.io/v1
-    kind: ImageStream
-    metadata:
-      creationTimestamp: null
-      labels:
-        move2kube.konveyor.io/service: fibonacci-web-latest
-      name: fibonacci-web-latest
-    spec:
-      lookupPolicy:
-        local: false
-      tags:
-        - annotations: null
-          from:
-            kind: DockerImage
-            name: fibonacci-web:latest
-          generation: null
-          importPolicy: {}
-          name: latest
-          referencePolicy:
-            type: ""
-    status:
-      dockerImageRepository: ""
-  - apiVersion: v1
-    data:
-      .dockerconfigjson: ewoJImF1dGhzIjogewoJCSJxdWF5LmlvIjoge30KCX0KfQ==
-    kind: Secret
-    metadata:
-      creationTimestamp: null
-      name: quay-io-imagepullsecret
-    type: kubernetes.io/dockerconfigjson
-  - apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      creationTimestamp: null
-      labels:
-        move2kube.konveyor.io/service: web
-      name: web
-    spec:
-      progressDeadlineSeconds: 600
-      replicas: ${{COMMON_REPLICAS}}
-      revisionHistoryLimit: 10
-      selector:
-        matchLabels:
-          move2kube.konveyor.io/service: web
-      strategy:
-        rollingUpdate:
-          maxSurge: 25%
-          maxUnavailable: 25%
-        type: RollingUpdate
-      template:
-        metadata:
-          creationTimestamp: null
-          labels:
-            move2kube.konveyor.io/service: web
-          name: web
-        spec:
-          containers:
-            - env:
-                - name: API_URL
-                  value: http://api:1234/api
-              image: quay.io/jefrankl/fibonacci-web:latest
-              imagePullPolicy: Always
-              name: web
-              ports:
-                - containerPort: 80
-                  protocol: TCP
-              resources: {}
-              terminationMessagePath: /dev/termination-log
-              terminationMessagePolicy: File
-          dnsPolicy: ClusterFirst
-          imagePullSecrets:
-            - name: quay-io-imagepullsecret
-          restartPolicy: Always
-          schedulerName: default-scheduler
-          securityContext: {}
-          terminationGracePeriodSeconds: 30
-    status: {}
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -244,6 +135,26 @@ objects:
           securityContext: {}
           terminationGracePeriodSeconds: 30
     status: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      creationTimestamp: null
+      labels:
+        move2kube.konveyor.io/service: api
+      name: api
+    spec:
+      internalTrafficPolicy: Cluster
+      ports:
+        - name: port-1234
+          port: 1234
+          protocol: TCP
+          targetPort: 1234
+      selector:
+        move2kube.konveyor.io/service: api
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
   - apiVersion: image.openshift.io/v1
     kind: ImageStream
     metadata:
@@ -266,6 +177,95 @@ objects:
             type: ""
     status:
       dockerImageRepository: ""
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      creationTimestamp: null
+      labels:
+        move2kube.konveyor.io/service: fibonacci-web-latest
+      name: fibonacci-web-latest
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - annotations: null
+          from:
+            kind: DockerImage
+            name: fibonacci-web:latest
+          generation: null
+          importPolicy: {}
+          name: latest
+          referencePolicy:
+            type: ""
+    status:
+      dockerImageRepository: ""
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      creationTimestamp: null
+      labels:
+        move2kube.konveyor.io/service: redis
+      name: redis
+    spec:
+      internalTrafficPolicy: Cluster
+      ports:
+        - name: port-6379
+          port: 6379
+          protocol: TCP
+          targetPort: 6379
+      selector:
+        move2kube.konveyor.io/service: redis
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      creationTimestamp: null
+      labels:
+        move2kube.konveyor.io/service: web
+      name: web
+    spec:
+      progressDeadlineSeconds: 600
+      replicas: ${{COMMON_REPLICAS}}
+      revisionHistoryLimit: 10
+      selector:
+        matchLabels:
+          move2kube.konveyor.io/service: web
+      strategy:
+        rollingUpdate:
+          maxSurge: 25%
+          maxUnavailable: 25%
+        type: RollingUpdate
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            move2kube.konveyor.io/service: web
+          name: web
+        spec:
+          containers:
+            - env:
+                - name: API_URL
+                  value: http://api:1234/api
+              image: quay.io/jefrankl/fibonacci-web:latest
+              imagePullPolicy: Always
+              name: web
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          imagePullSecrets:
+            - name: quay-io-imagepullsecret
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status: {}
 parameters:
   - name: COMMON_REPLICAS
     value: "2"
